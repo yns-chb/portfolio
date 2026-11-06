@@ -1,131 +1,211 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
 
-const champ = 'w-full border-[3px] border-noir bg-creme p-4 font-sans text-noir placeholder:text-noir/50';
+const champ =
+  "w-full border-[3px] border-noir bg-creme p-4 font-sans text-noir placeholder:text-noir/50";
 ---
 
 <BaseLayout
+  headerSombre
   title="Contact"
   description="Contactez Yanis Forster pour une proposition de stage en développement web à Montbéliard, Belfort ou Mulhouse."
 >
-  <div class="grid flex-1 gap-12 bg-noir px-4 py-16 text-creme md:px-7 lg:grid-cols-2 lg:gap-24">
+  <div
+    class="grid flex-1 gap-12 bg-noir px-4 py-16 text-creme md:px-7 lg:grid-cols-2 lg:gap-24"
+  >
     <section class="font-mono">
       <h1 class="text-7xl md:text-9xl">Me<br />contacter</h1>
       <div class="mt-8 flex flex-col gap-6 text-lg">
         <p>&gt; Je suis actuellement à la recherche d'un stage conventionné.</p>
         <p>&gt; Secteurs : Montbéliard, Belfort, Mulhouse.</p>
-        <p>&gt; N'hésitez pas à me détailler votre proposition via ce formulaire, je vous répondrai dans les plus brefs délais.</p>
+        <p>
+          &gt; N'hésitez pas à me détailler votre proposition via ce formulaire,
+          je vous répondrai dans les plus brefs délais.
+        </p>
       </div>
 
-      <h2 class="label-mono mt-12 font-mono text-2xl text-rouge-clair">&gt; Mes réseaux</h2>
+      <h2 class="label-mono mt-12 font-mono text-2xl text-rouge-clair">
+        &gt; Mes réseaux
+      </h2>
       <ul class="mt-3 flex flex-col gap-2 font-bold">
-        <li><a href="https://www.linkedin.com/in/TON-PROFIL" class="underline hover:text-rouge-clair">[LinkedIn]</a></li>
-        <li><a href="https://github.com/yns-chb" class="underline hover:text-rouge-clair">[Github]</a></li>
+        <li>
+          <a
+            href="https://www.linkedin.com/in/TON-PROFIL"
+            class="underline hover:text-rouge-clair">[LinkedIn]</a>
+        </li>
+        <li>
+          <a
+            href="https://github.com/yns-chb"
+            class="underline hover:text-rouge-clair">[Github]</a>
+        </li>
       </ul>
     </section>
 
     <!-- Sans JavaScript, le formulaire est envoyé normalement au script PHP -->
-    <form id="contact" action="/contact.php" method="post" class="flex flex-col gap-8" novalidate>
+    <form
+      id="contact"
+      action="/contact.php"
+      method="post"
+      class="flex flex-col gap-8"
+      novalidate
+    >
       <div>
-        <label for="nom" class="label-mono block text-lg text-rouge-clair">&gt; Nom complet / entreprise :</label>
-        <input id="nom" name="nom" type="text" required autocomplete="name" maxlength="120"
-          placeholder="Votre nom ou celui de votre entreprise..." class={`${champ} mt-3`} />
+        <label for="nom" class="label-mono block text-lg text-rouge-clair"
+          >&gt; Nom complet / entreprise :</label
+        >
+        <input
+          id="nom"
+          name="nom"
+          type="text"
+          required
+          autocomplete="name"
+          maxlength="120"
+          placeholder="Votre nom ou celui de votre entreprise..."
+          class={`${champ} mt-3`}
+        />
       </div>
 
       <div>
-        <label for="email" class="label-mono block text-lg text-rouge-clair">&gt; Adresse email :</label>
-        <input id="email" name="email" type="email" required autocomplete="email" maxlength="200"
-          placeholder="votre.email@exemple.com" class={`${champ} mt-3`} />
+        <label for="email" class="label-mono block text-lg text-rouge-clair"
+          >&gt; Adresse email :</label
+        >
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          maxlength="200"
+          placeholder="votre.email@exemple.com"
+          class={`${champ} mt-3`}
+        />
       </div>
 
       <div>
-        <label for="message" class="label-mono block text-lg text-rouge-clair">&gt; Votre message :</label>
-        <textarea id="message" name="message" required rows="7" maxlength="5000"
-          placeholder="Détaillez votre proposition de stage, vos dates ou votre projet..." class={`${champ} mt-3`}></textarea>
+        <label for="message" class="label-mono block text-lg text-rouge-clair"
+          >&gt; Votre message :</label
+        >
+        <textarea
+          id="message"
+          name="message"
+          required
+          rows="7"
+          maxlength="5000"
+          placeholder="Détaillez votre proposition de stage, vos dates ou votre projet..."
+          class={`${champ} mt-3`}></textarea>
       </div>
 
       <!-- Piège à robots : caché aux humains, rempli par les bots -->
       <div class="hidden" aria-hidden="true">
         <label for="site">Ne pas remplir</label>
-        <input id="site" name="site" type="text" tabindex="-1" autocomplete="off" />
+        <input
+          id="site"
+          name="site"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        />
       </div>
 
       <div class="flex items-start gap-4">
-        <input id="consentement" name="consentement" type="checkbox" required class="mt-1 size-6 shrink-0 accent-rouge" />
+        <input
+          id="consentement"
+          name="consentement"
+          type="checkbox"
+          required
+          class="mt-1 size-6 shrink-0 accent-rouge"
+        />
         <label for="consentement" class="text-sm">
-          J'autorise le traitement de mes données personnelles dans le but de traiter ma demande de contact,
-          conformément aux <a href="/mentions-legales/" class="underline">mentions légales</a>.
+          J'autorise le traitement de mes données personnelles dans le but de
+          traiter ma demande de contact, conformément aux <a
+            href="/mentions-legales/"
+            class="underline">mentions légales</a
+          >.
         </label>
       </div>
 
-      <button type="submit" class="bg-rouge py-6 font-display text-3xl uppercase text-creme hover:bg-creme hover:text-rouge">
+      <button
+        type="submit"
+        class="bg-rouge py-6 font-display text-3xl uppercase text-creme hover:bg-creme hover:text-rouge"
+      >
         Envoyer le message
       </button>
 
       <!-- Sortie "terminal" : lue par les lecteurs d'écran grâce à role="status" -->
-      <pre id="terminal" role="status" class="min-h-24 whitespace-pre-wrap font-mono text-sm text-creme"></pre>
+      <pre
+        id="terminal"
+        role="status"
+        class="min-h-24 whitespace-pre-wrap font-mono text-sm text-creme">
+      </pre>
     </form>
   </div>
 </BaseLayout>
 
 <script>
-  const form = document.getElementById('contact') as HTMLFormElement | null;
-  const terminal = document.getElementById('terminal');
+  const form = document.getElementById("contact") as HTMLFormElement | null;
+  const terminal = document.getElementById("terminal");
 
   // Affiche une ligne dans le terminal, avec un léger délai pour l'effet console
   const ecrire = (texte: string, erreur = false) =>
     new Promise<void>((resolve) => {
       setTimeout(() => {
-        const ligne = document.createElement('span');
+        const ligne = document.createElement("span");
         ligne.textContent = `> ${texte}\n`;
-        if (erreur) ligne.className = 'text-rouge-clair';
+        if (erreur) ligne.className = "text-rouge-clair";
         terminal?.append(ligne);
         resolve();
       }, 250);
     });
 
   // Retour du PHP quand le formulaire a été envoyé sans JS (?envoi=ok ou ?envoi=erreur)
-  const envoi = new URLSearchParams(location.search).get('envoi');
-  if (envoi === 'ok') ecrire('message transmis ✓');
-  if (envoi === 'erreur') ecrire("erreur : le message n'a pas pu être envoyé", true);
+  const envoi = new URLSearchParams(location.search).get("envoi");
+  if (envoi === "ok") ecrire("message transmis ✓");
+  if (envoi === "erreur")
+    ecrire("erreur : le message n'a pas pu être envoyé", true);
 
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!terminal) return;
-    terminal.textContent = '';
+    terminal.textContent = "";
 
     // Validation avec les règles HTML (required, type="email"…)
     const invalide = [...form.elements].find(
       (el): el is HTMLInputElement | HTMLTextAreaElement =>
-        (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) && !el.checkValidity(),
+        (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) &&
+        !el.checkValidity(),
     );
 
     if (invalide) {
-      const label = form.querySelector(`label[for="${invalide.id}"]`)?.textContent?.replace('>', '').replace(':', '').trim();
+      const label = form
+        .querySelector(`label[for="${invalide.id}"]`)
+        ?.textContent?.replace(">", "")
+        .replace(":", "")
+        .trim();
       await ecrire(`erreur : champ "${label}" invalide`, true);
       invalide.focus();
       return;
     }
 
-    const bouton = form.querySelector('button');
+    const bouton = form.querySelector("button");
     if (bouton) bouton.disabled = true;
-    await ecrire('connexion au serveur...');
+    await ecrire("connexion au serveur...");
 
     try {
       const reponse = await fetch(form.action, {
-        method: 'POST',
+        method: "POST",
         body: new FormData(form),
-        headers: { Accept: 'application/json' },
+        headers: { Accept: "application/json" },
       });
       const resultat = await reponse.json();
-      if (!reponse.ok || !resultat.ok) throw new Error(resultat.erreur ?? 'envoi impossible');
+      if (!reponse.ok || !resultat.ok)
+        throw new Error(resultat.erreur ?? "envoi impossible");
 
-      await ecrire('message transmis ✓');
-      await ecrire('je vous réponds au plus vite.');
+      await ecrire("message transmis ✓");
+      await ecrire("je vous réponds au plus vite.");
       form.reset();
     } catch (err) {
       await ecrire(`erreur : ${(err as Error).message}`, true);
-      await ecrire('vous pouvez aussi écrire à yanis.forster@gmail.com', true);
+      await ecrire("vous pouvez aussi écrire à yanis.forster@gmail.com", true);
     } finally {
       if (bouton) bouton.disabled = false;
     }

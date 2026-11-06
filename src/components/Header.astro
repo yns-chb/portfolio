@@ -1,49 +1,97 @@
 ---
 // En-tête + navigation. Menu hamburger en dessous de md (768px).
+// Variante sombre (fond noir) pour la page contact : <Header sombre />
+interface Props {
+  sombre?: boolean;
+}
+
+const { sombre = false } = Astro.props;
+
 const liens = [
-  { href: '/projets/', label: '[projets]' },
-  { href: '/a-propos/', label: '[à_propos]' },
-  { href: '/contact/', label: '[contact]' },
+  { href: "/projets/", label: "[projets]" },
+  { href: "/a-propos/", label: "[à_propos]" },
+  { href: "/contact/", label: "[contact]" },
 ];
 
 // Normalise pour comparer "/contact" et "/contact/"
-const actuel = Astro.url.pathname.replace(/\/?$/, '/');
-const estActif = (href: string) => actuel === href || actuel.startsWith(href);
+const actuel = Astro.url.pathname.replace(/\/?$/, "/");
+const estActif = (href: string) => actuel.startsWith(href);
+
+// Sur fond noir, le rouge est éclairci pour garder un contraste suffisant
+const rouge = sombre ? "text-rouge-clair" : "text-rouge";
 ---
 
-<header class="sticky top-0 z-40 border-b-[6px] border-noir bg-creme">
-  <div class="flex items-center justify-between gap-6 px-4 py-5 md:px-7">
-    <a href="/" class="font-mono text-lg font-bold uppercase text-rouge md:text-2xl">
+<header
+  class:list={[
+    "sticky top-0 z-40 border-b-4 font-mono font-bold uppercase",
+    sombre
+      ? "border-creme bg-noir text-creme"
+      : "border-noir bg-creme text-noir",
+  ]}
+>
+  <div
+    class="flex flex-wrap items-center gap-x-8 gap-y-3 px-4 py-4 md:px-7 xl:gap-x-12 xl:py-5"
+  >
+    <a
+      href="/"
+      class:list={[
+        "mr-auto whitespace-nowrap md:mr-0 lg:text-base xl:text-xl",
+        rouge,
+      ]}
+    >
       [Yanis_Forster // root]
     </a>
 
     <button
       id="menu-bouton"
       type="button"
-      class="font-mono font-bold uppercase md:hidden"
+      class="font-bold uppercase md:hidden"
       aria-expanded="false"
       aria-controls="menu"
     >
       [menu]
     </button>
 
-    <nav id="menu" aria-label="Navigation principale" class="hidden md:block">
-      <ul class="flex flex-col gap-4 font-mono text-xl font-bold uppercase md:flex-row md:gap-10 md:text-2xl">
-        {liens.map(({ href, label }) => (
-          <li>
-            <a
-              href={href}
-              aria-current={estActif(href) ? 'page' : undefined}
-              class="hover:text-rouge aria-[current=page]:text-rouge"
-            >
-              {label}
-            </a>
-          </li>
-        ))}
+    <nav
+      id="menu"
+      aria-label="Navigation principale"
+      class="hidden w-full md:block md:w-auto"
+    >
+      <ul
+        class="flex flex-col gap-4 text-xl md:flex-row md:gap-6 md:text-base xl:gap-10 xl:text-xl"
+      >
+        {
+          liens.map(({ href, label }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={estActif(href) ? "page" : undefined}
+                class:list={[
+                  "whitespace-nowrap",
+                  sombre
+                    ? "hover:text-rouge-clair aria-[current=page]:text-rouge-clair"
+                    : "hover:text-rouge aria-[current=page]:text-rouge",
+                ]}
+              >
+                {label}
+              </a>
+            </li>
+          ))
+        }
       </ul>
     </nav>
 
-    <p class="hidden font-mono text-2xl font-bold uppercase xl:block">
+    <!-- Sous 1024px : sur sa propre ligne. Au-delà : calé à droite sur la ligne du menu -->
+    <p
+      class="flex w-full items-center gap-3 text-sm whitespace-nowrap lg:ml-auto lg:w-auto lg:text-base xl:text-xl"
+    >
+      <!-- Voyant "en ligne" : clignote, figé si l'utilisateur a réduit les animations (voir global.css) -->
+      <span
+        class:list={[
+          "size-3 animate-clignote",
+          sombre ? "bg-rouge-clair" : "bg-rouge",
+        ]}
+        aria-hidden="true"></span>
       Statut : recherche de stage
     </p>
   </div>
@@ -51,28 +99,31 @@ const estActif = (href: string) => actuel === href || actuel.startsWith(href);
 
 <script>
   // Ouvre / ferme le menu mobile et tient aria-expanded à jour pour les lecteurs d'écran
-  const bouton = document.getElementById('menu-bouton');
-  const menu = document.getElementById('menu');
+  const bouton = document.getElementById("menu-bouton");
+  const menu = document.getElementById("menu");
 
   if (bouton && menu) {
     const fermer = () => {
-      bouton.setAttribute('aria-expanded', 'false');
-      bouton.textContent = '[menu]';
-      menu.classList.add('hidden');
+      bouton.setAttribute("aria-expanded", "false");
+      bouton.textContent = "[menu]";
+      menu.classList.add("hidden");
     };
 
-    bouton.addEventListener('click', () => {
-      const ouvert = bouton.getAttribute('aria-expanded') === 'true';
+    bouton.addEventListener("click", () => {
+      const ouvert = bouton.getAttribute("aria-expanded") === "true";
       if (ouvert) return fermer();
-      bouton.setAttribute('aria-expanded', 'true');
-      bouton.textContent = '[fermer]';
-      menu.classList.remove('hidden');
-      menu.querySelector('a')?.focus();
+      bouton.setAttribute("aria-expanded", "true");
+      bouton.textContent = "[fermer]";
+      menu.classList.remove("hidden");
+      menu.querySelector("a")?.focus();
     });
 
     // Échap ferme le menu et rend le focus au bouton
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && bouton.getAttribute('aria-expanded') === 'true') {
+    document.addEventListener("keydown", (e) => {
+      if (
+        e.key === "Escape" &&
+        bouton.getAttribute("aria-expanded") === "true"
+      ) {
         fermer();
         bouton.focus();
       }

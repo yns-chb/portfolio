@@ -1,10 +1,8 @@
 <?php
-// Traitement du formulaire de contact, exécuté sur l'hébergement Infomaniak.
-// Les données ne sont pas stockées : elles sont envoyées par mail puis oubliées.
 
 const DESTINATAIRE = 'yanis.forster@gmail.com';
-// Adresse d'expédition sur TON domaine (sinon le mail risque de finir en spam)
-const EXPEDITEUR = 'contact@ton-domaine.fr';
+
+const EXPEDITEUR = 'contact@yanischouhib.fr';
 
 $veutJson = str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
 
@@ -16,7 +14,7 @@ function repondre(bool $ok, string $erreur = ''): never
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode(['ok' => $ok, 'erreur' => $erreur ?: null]);
     } else {
-        // Sans JavaScript : retour sur la page contact
+      
         header('Location: /contact/?envoi=' . ($ok ? 'ok' : 'erreur'), true, 303);
     }
     exit;
@@ -26,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     repondre(false, 'méthode non autorisée');
 }
 
-// Piège à robots rempli : on fait semblant que tout va bien
+
 if (!empty($_POST['site'])) {
     repondre(true);
 }
@@ -41,7 +39,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) repondre(false, 'adresse email i
 if ($message === '' || mb_strlen($message) > 5000) repondre(false, 'message manquant ou trop long');
 if (!$consentement) repondre(false, 'consentement requis');
 
-// Empêche l'injection d'en-têtes mail via le nom
+
 $nom = str_replace(["\r", "\n"], ' ', $nom);
 
 $sujet = '=?UTF-8?B?' . base64_encode("[Portfolio] Message de $nom") . '?=';

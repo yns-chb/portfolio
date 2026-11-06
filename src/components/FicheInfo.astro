@@ -8,13 +8,19 @@ interface Props {
 const { infos } = Astro.props;
 ---
 
-<aside class="bg-noir p-7 font-mono uppercase lg:sticky lg:top-32 lg:self-start">
+<aside
+  class="bg-noir p-7 font-mono text-petit uppercase lg:sticky lg:top-32 lg:self-start"
+>
   <dl class="flex flex-col gap-7">
-    {infos.map(({ label, valeur }) => (
-      <div>
-        <dt class="font-bold text-rouge-clair">&gt; {label}</dt>
-        <dd class="mt-1 font-bold whitespace-pre-line text-creme">{valeur}</dd>
-      </div>
-    ))}
+    {
+      infos.map(({ label, valeur }) => (
+        <div>
+          <dt class="font-bold text-rouge-clair">&gt; {label}</dt>
+          <dd class="mt-1 font-bold whitespace-pre-line text-creme">
+            {valeur}
+          </dd>
+        </div>
+      ))
+    }
   </dl>
 </aside>

@@ -1,0 +1,153 @@
+---
+// Écran d'entrée affiché par-dessus la page d'accueil, une seule fois par visite.
+// Le site est déjà dans le HTML en dessous : Google et les visiteurs sans JS le voient directement.
+---
+
+<div
+  id="intro"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="intro-titre"
+  class="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-white text-black"
+  hidden
+>
+  <!-- Étape 1 : écran d'accueil neutre -->
+  <div
+    id="intro-accueil"
+    class="flex flex-col items-center gap-8 px-6 text-center"
+  >
+    <p
+      id="intro-titre"
+      class="text-4xl font-semibold tracking-tight md:text-6xl"
+    >
+      Yanis Forster
+    </p>
+
+    <div class="flex flex-col items-center gap-4">
+      <button
+        id="intro-entrer"
+        type="button"
+        class="border border-black px-8 py-3 text-lg hover:bg-black hover:text-white"
+      >
+        Entrer
+      </button>
+      <button
+        id="intro-direct"
+        type="button"
+        class="text-sm text-neutral-600 underline underline-offset-4 hover:text-black"
+      >
+        Aller directement au portfolio
+      </button>
+    </div>
+  </div>
+
+  <!-- Étape 2 : la boîte terminal, puis le rouge et le noir qui envahissent l'écran -->
+  <div
+    id="intro-rouge"
+    class="absolute h-24 w-80 translate-x-2 translate-y-2 bg-rouge"
+    hidden
+  >
+  </div>
+  <div
+    id="intro-boite"
+    class="absolute flex h-24 w-80 items-center justify-center bg-noir"
+    hidden
+  >
+    <span
+      id="intro-texte"
+      class="font-mono text-sm whitespace-nowrap text-creme md:text-base"
+      aria-live="polite"></span>
+  </div>
+</div>
+
+<!-- is:inline : exécuté pendant le chargement, avant l'affichage, pour éviter que le site apparaisse une fraction de seconde -->
+<script is:inline>
+  try {
+    if (!sessionStorage.getItem("intro-vue")) {
+      document.getElementById("intro").hidden = false;
+      document.documentElement.style.overflow = "hidden";
+    }
+  } catch {
+    // sessionStorage bloqué (navigation privée stricte) : pas d'intro
+  }
+</script>
+
+<script>
+  const intro = document.getElementById("intro")!;
+  const accueil = document.getElementById("intro-accueil")!;
+  const rouge = document.getElementById("intro-rouge")!;
+  const boite = document.getElementById("intro-boite")!;
+  const texte = document.getElementById("intro-texte")!;
+  const entrer = document.getElementById("intro-entrer")!;
+  const direct = document.getElementById("intro-direct")!;
+
+  const attendre = (ms: number) => new Promise((r) => setTimeout(r, ms));
+  const mouvementReduit = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  // Tout sauf l'intro devient inaccessible au clavier tant qu'elle est ouverte
+  const reste = [...document.body.children].filter((el) => el !== intro);
+
+  function fermer() {
+    try {
+      sessionStorage.setItem("intro-vue", "1");
+    } catch {}
+    intro.remove();
+    document.documentElement.style.overflow = "";
+    reste.forEach((el) => el.removeAttribute("inert"));
+    document.getElementById("contenu")?.focus({ preventScroll: true });
+  }
+
+  async function lancer() {
+    accueil.remove();
+    rouge.hidden = false;
+    boite.hidden = false;
+
+    // Phase 1 : le texte s'écrit dans le terminal
+    const message = "> INITIALISATION DU PROJET";
+    for (let i = 1; i <= message.length; i++) {
+      texte.textContent = message.slice(0, i) + "_";
+      await attendre(mouvementReduit ? 0 : 40);
+    }
+
+    if (mouvementReduit) {
+      // Pas d'expansion ni de fondu : on laisse lire le texte puis on ouvre le site
+      await attendre(800);
+      return fermer();
+    }
+
+    // Phase 2 : le rouge envahit l'écran, puis le noir par-dessus
+    await attendre(400);
+    const etendre = (el: HTMLElement) => {
+      el.style.transition = "width 0.6s, height 0.6s, transform 0.6s";
+      el.style.transitionTimingFunction = "cubic-bezier(0.85, 0, 0.15, 1)";
+      el.style.transform = "none";
+      el.style.width = "200vw";
+      el.style.height = "200vh";
+    };
+    etendre(rouge);
+    texte.style.transition = "opacity 0.2s";
+    texte.style.opacity = "0";
+    await attendre(250);
+    etendre(boite);
+
+    // Phase 3 : révélation du site
+    await attendre(650);
+    intro.style.transition = "opacity 0.3s";
+    intro.style.opacity = "0";
+    await attendre(300);
+    fermer();
+  }
+
+  if (!intro.hidden) {
+    reste.forEach((el) => el.setAttribute("inert", ""));
+    entrer.focus();
+    entrer.addEventListener("click", lancer, { once: true });
+    direct.addEventListener("click", fermer);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && document.body.contains(intro)) fermer();
+    });
+  } else {
+    intro.remove();
+  }
+</script>

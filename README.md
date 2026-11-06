@@ -1,6 +1,6 @@
 # Portfolio — Yanis Forster
 
-Portfolio de Yanis Forster, étudiant en BUT MMI (parcours développement web) à l'IUT de Montbéliard.
+Mon portfolio, je suis étudiant en BUT MMI (parcours développement web) à l'IUT de Montbéliard.
 
 Site en ligne : https://www.ton-domaine.fr
 
@@ -20,12 +20,11 @@ Site en ligne : https://www.ton-domaine.fr
 
 ```bash
 npm install
-npm run dev      # serveur local sur http://localhost:4321
-npm run build    # génère le site dans dist/
-npm run preview  # prévisualise le build
+npm run dev      
+npm run build    
+npm run preview  
 ```
 
-> `contact.php` ne tourne pas avec `npm run dev` : le formulaire se teste une fois en ligne.
 
 ## Structure
 

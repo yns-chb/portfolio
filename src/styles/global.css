@@ -1,22 +1,31 @@
 @import "tailwindcss";
 
-
+/* Polices auto-hébergées (pas d'appel à Google Fonts → pas de transfert d'IP, RGPD) */
 @import "@fontsource/anton/400.css";
 @import "@fontsource/space-mono/400.css";
 @import "@fontsource/space-mono/700.css";
 @import "@fontsource-variable/inter";
 
-
+/* Tokens repris du guide de style Figma */
 @theme {
   --color-creme: #efeedd;
   --color-rouge: #b70101;
-  
+  /* Rouge éclairci pour le texte sur fond noir : #b70101 sur noir ≈ 3:1, trop faible (WCAG AA = 4.5:1) */
   --color-rouge-clair: #ff5c5c;
   --color-noir: #000000;
 
   --font-display: "Anton", Impact, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
   --font-sans: "Inter Variable", system-ui, sans-serif;
+
+  /* Voyant du statut : allumé / éteint, sans transition (steps) */
+  --animate-clignote: clignote 1.2s steps(1, end) infinite;
+
+  @keyframes clignote {
+    50% {
+      opacity: 0;
+    }
+  }
 }
 
 @layer base {
@@ -25,29 +34,39 @@
     scroll-behavior: smooth;
   }
 
-  h1, h2 {
+  h1,
+  h2 {
     @apply font-display uppercase leading-none;
   }
 
- 
+  /* Focus bien visible pour la navigation clavier */
   :focus-visible {
     outline: 3px solid var(--color-rouge);
     outline-offset: 3px;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { transition: none !important; animation: none !important; }
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      transition: none !important;
+      animation: none !important;
+    }
   }
 }
 
 @layer components {
 
+  /* Libellés façon terminal : "> mon_libellé" */
   .label-mono {
     @apply font-mono font-bold uppercase text-rouge;
   }
 
- 
+  /* Tag rouge type [développement] */
   .tag {
     @apply inline-block border-2 border-noir bg-rouge px-3 py-1 font-mono font-bold uppercase text-creme;
   }
