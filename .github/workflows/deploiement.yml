@@ -1,0 +1,35 @@
+# Déploiement automatique sur Infomaniak à chaque push sur la branche principale.
+# Le serveur ne voit jamais le code source : seulement le site construit (dist/).
+name: Déploiement Infomaniak
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: # bouton "Run workflow" dans l'onglet Actions, pour relancer à la main
+
+jobs:
+  deploiement:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Installer les dépendances
+        run: bun install --frozen-lockfile
+
+      - name: Construire le site
+        run: bun run build
+
+      # Envoi en FTPS (FTP chiffré). Seuls les fichiers modifiés sont renvoyés.
+      - name: Envoyer sur Infomaniak
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_DIR }}
