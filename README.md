@@ -1,8 +1,8 @@
 # Portfolio — Yanis Forster
 
-Mon portfolio, je suis étudiant en BUT MMI (parcours développement web) à l'IUT de Montbéliard.
+Portfolio de Yanis Forster, étudiant en BUT MMI (parcours développement web) à l'IUT de Montbéliard.
 
-Site en ligne : https://www.ton-domaine.fr
+Site en ligne : https://yanischouhib.fr
 
 ## Stack
 
@@ -19,18 +19,19 @@ Site en ligne : https://www.ton-domaine.fr
 ## Lancer le projet
 
 ```bash
-npm install
-npm run dev      
-npm run build    
-npm run preview  
+bun install
+bun run dev      # serveur local sur http://localhost:4321
+bun run build    # génère le site dans dist/
+bun run preview  # prévisualise le build
 ```
 
+> `contact.php` ne tourne pas avec `bun run dev` : le formulaire se teste une fois en ligne.
 
 ## Structure
 
 ```
 src/
-  components/   Header, Footer, FicheInfo
+  components/   Header, Footer, FicheInfo, Intro
   layouts/      BaseLayout (head, SEO, header, footer)
   pages/        une page = une route
   styles/       global.css (thème Tailwind)

@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   // À remplacer par ton vrai nom de domaine : sert au sitemap et aux URL canoniques
-  site: 'https://www.yanischouhib.fr.fr',
+  site: 'https://yanischouhib.fr',
   integrations: [sitemap()],
   vite: { plugins: [tailwindcss()] },
 });

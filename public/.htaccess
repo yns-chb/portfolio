@@ -1,0 +1,24 @@
+# Configuration du serveur Apache d'Infomaniak (copiée telle quelle dans dist/ au build)
+# Le passage forcé en HTTPS se règle dans le Manager Infomaniak, pas ici
+# (une redirection ici peut boucler derrière leur proxy).
+
+# Page d'erreur personnalisée
+ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  # Fichiers de /_astro/ : leur nom contient un hash qui change à chaque modification,
+  # on peut donc les garder en cache 1 an sans risque (sobriété : pas de re-téléchargement)
+  <If "%{REQUEST_URI} =~ m#^/_astro/#">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </If>
+
+  # Sécurité de base
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Compression des fichiers texte
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/xml
+</IfModule>
