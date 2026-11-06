@@ -28,8 +28,8 @@ const poles = [
   description="Étudiant en BUT MMI parcours développement web à Montbéliard, je cherche un stage en développement front-end."
 >
   <section class="border-b-[3px] border-noir px-4 pt-16 pb-12 md:px-7">
-    <h1 class="text-7xl md:text-9xl">À propos</h1>
-    <p class="label-mono mt-6 text-lg md:text-2xl">&gt; Étudiant en BUT MMI — parcours développement web</p>
+    <h1 class="text-titre">À propos</h1>
+    <p class="label-mono mt-6 text-label">&gt; Étudiant en BUT MMI — parcours développement web</p>
   </section>
 
   <div class="grid gap-12 px-4 py-16 md:px-7 lg:grid-cols-[284px_1fr] lg:gap-24">
@@ -37,8 +37,8 @@ const poles = [
 
     <div class="flex max-w-[980px] flex-col gap-14">
       <section>
-        <h2 class="text-5xl md:text-7xl">Développement</h2>
-        <p class="mt-6 text-lg leading-relaxed md:text-xl">
+        <h2 class="text-titre-2">Développement</h2>
+        <p class="mt-6 text-corps">
           Au sein de mon BUT MMI, j'ai fait le choix du parcours Développement Web pour me concentrer sur
           l'architecture, la logique et l'intégration. Mon objectif d'étudiant est d'acquérir les meilleures
           pratiques de l'industrie : écrire un code propre, structurer efficacement une base de données et
@@ -48,8 +48,8 @@ const poles = [
       </section>
 
       <section>
-        <h2 class="text-5xl md:text-7xl">Vision front-end</h2>
-        <p class="mt-6 text-lg leading-relaxed md:text-xl">
+        <h2 class="text-titre-2">Vision front-end</h2>
+        <p class="mt-6 text-corps">
           Si mon cœur de métier reste le code, j'ai conservé de solides bases en UI/UX. Savoir prototyper sur
           Figma est pour moi un outil de développement : cela me permet de comprendre parfaitement les
           intentions des designers, de parler le même langage qu'eux, et d'intégrer leurs maquettes au pixel
@@ -60,10 +60,10 @@ const poles = [
       <ul class="grid gap-10 border-t-[3px] border-noir pt-14 md:grid-cols-2">
         {poles.map(({ tag, titre, texte }) => (
           <li>
-            <span class="tag">{tag}</span>
+            <span class="tag text-petit">{tag}</span>
             <div class="border-[3px] border-noir p-6">
-              <h3 class="label-mono text-lg text-noir">{titre}</h3>
-              <p class="mt-4 font-mono">{texte}</p>
+              <h3 class="label-mono text-meta text-noir">{titre}</h3>
+              <p class="mt-4 font-mono text-petit">{texte}</p>
             </div>
           </li>
         ))}

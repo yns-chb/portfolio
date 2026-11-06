@@ -18,6 +18,27 @@
   --font-mono: "Space Mono", ui-monospace, monospace;
   --font-sans: "Inter Variable", system-ui, sans-serif;
 
+  /* Échelle typographique reprise des styles de texte Figma (maquette en 1440px).
+     La taille suit la largeur de l'écran (vw) : identique à la maquette à 1440px,
+     proportionnellement plus petite en dessous, bloquée par un minimum sur mobile. */
+  --text-accueil: clamp(4.5rem, 11.11vw, 10rem);
+  /* YANIS FORSTER — 160px */
+  --text-titre: clamp(3.5rem, 8.89vw, 8rem);
+  /* H1 — 128px */
+  --text-titre-2: clamp(2.5rem, 4.44vw, 4rem);
+  /* H2 — 64px */
+  --text-bouton: clamp(1.5rem, 2.22vw, 2rem);
+  /* bouton envoyer — 32px */
+  --text-label: clamp(1rem, 1.39vw, 1.25rem);
+  /* libellés "> …" — 20px */
+  --text-meta: clamp(0.9375rem, 1.25vw, 1.125rem);
+  /* texte mono — 18px */
+  --text-corps: clamp(1rem, 1.25vw, 1.125rem);
+  /* paragraphes — 18px */
+  --text-corps--line-height: 1.7;
+  --text-petit: clamp(0.875rem, 1.11vw, 1rem);
+  /* légendes, cartes — 16px */
+
   /* Voyant du statut : allumé / éteint, sans transition (steps) */
   --animate-clignote: clignote 1.2s steps(1, end) infinite;
 
