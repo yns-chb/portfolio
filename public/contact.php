@@ -52,7 +52,10 @@ $entetes = implode("\r\n", [
     'Content-Type: text/plain; charset=utf-8',
 ]);
 
-if (!mail(DESTINATAIRE, $sujet, $corps, $entetes)) {
+// 5e paramètre "-f" : l'adresse d'expédition technique (enveloppe) devient contact@yanischouhib.fr.
+// Sans ça, le mail part avec une adresse du serveur Infomaniak, le contrôle DMARC échoue
+// et Gmail le rejette (la zone DNS du domaine demande "p=reject").
+if (!mail(DESTINATAIRE, $sujet, $corps, $entetes, '-f' . EXPEDITEUR)) {
     repondre(false, 'le serveur n\'a pas pu envoyer le message');
 }
 
