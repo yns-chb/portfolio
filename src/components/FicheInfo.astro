@@ -1,0 +1,20 @@
+---
+// Panneau noir "> libellé / valeur" : page À propos et fiches projet.
+// Sur grand écran, il reste collé en haut pendant le scroll (sticky).
+interface Props {
+  infos: { label: string; valeur: string }[];
+}
+
+const { infos } = Astro.props;
+---
+
+<aside class="bg-noir p-7 font-mono uppercase lg:sticky lg:top-32 lg:self-start">
+  <dl class="flex flex-col gap-7">
+    {infos.map(({ label, valeur }) => (
+      <div>
+        <dt class="font-bold text-rouge-clair">&gt; {label}</dt>
+        <dd class="mt-1 font-bold whitespace-pre-line text-creme">{valeur}</dd>
+      </div>
+    ))}
+  </dl>
+</aside>

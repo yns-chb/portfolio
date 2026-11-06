@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+
+@import "@fontsource/anton/400.css";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
+@import "@fontsource-variable/inter";
+
+
+@theme {
+  --color-creme: #efeedd;
+  --color-rouge: #b70101;
+  
+  --color-rouge-clair: #ff5c5c;
+  --color-noir: #000000;
+
+  --font-display: "Anton", Impact, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    @apply bg-creme text-noir font-sans;
+    scroll-behavior: smooth;
+  }
+
+  h1, h2 {
+    @apply font-display uppercase leading-none;
+  }
+
+ 
+  :focus-visible {
+    outline: 3px solid var(--color-rouge);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+}
+
+@layer components {
+
+  .label-mono {
+    @apply font-mono font-bold uppercase text-rouge;
+  }
+
+ 
+  .tag {
+    @apply inline-block border-2 border-noir bg-rouge px-3 py-1 font-mono font-bold uppercase text-creme;
+  }
+}

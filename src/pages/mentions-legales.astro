@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Mentions légales"
+  description="Mentions légales, hébergement et traitement des données personnelles du portfolio de Yanis Forster."
+>
+  <section class="px-4 pt-16 pb-12 md:px-7">
+    <h1 class="text-7xl md:text-9xl">Mentions<br />légales</h1>
+  </section>
+
+  <div class="mx-4 mb-20 flex flex-col gap-12 bg-noir p-7 text-creme md:mx-7 md:p-12">
+    <section>
+      <h2 class="label-mono font-mono text-2xl text-rouge-clair">01. Propriétaire</h2>
+      <ul class="mt-4 space-y-1">
+        <li><strong>Identité :</strong> Yanis Forster</li>
+        <li><strong>Statut :</strong> Étudiant en BUT Métiers du Multimédia et de l'Internet (IUT de Montbéliard)</li>
+        <li><strong>Contact :</strong> <a href="mailto:yanis.forster@gmail.com" class="underline">yanis.forster@gmail.com</a></li>
+        <li><strong>Directeur de la publication :</strong> Yanis Forster</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="label-mono font-mono text-2xl text-rouge-clair">02. Hébergement</h2>
+      <ul class="mt-4 space-y-1">
+        <li><strong>Hébergeur :</strong> Infomaniak Network SA</li>
+        <li><strong>Site web :</strong> <a href="https://www.infomaniak.com" class="underline">www.infomaniak.com</a></li>
+        <!-- Vérifie l'adresse et le téléphone sur le site d'Infomaniak avant la mise en ligne -->
+        <li><strong>Adresse :</strong> Rue Eugène-Marziano 25, 1227 Les Acacias (Genève), Suisse</li>
+        <li><strong>Téléphone :</strong> +41 22 820 35 44</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="label-mono font-mono text-2xl text-rouge-clair">03. Propriété intellectuelle</h2>
+      <p class="mt-4">
+        L'ensemble de ce site (architecture, textes, photographies, illustrations et code) relève de la
+        législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les
+        droits de reproduction sont réservés. La reproduction, représentation, modification ou adaptation de
+        tout ou partie des éléments de ce site, sans l'accord préalable et écrit de Yanis Forster, est
+        strictement interdite.
+      </p>
+      <!-- À compléter : crédits des images qui ne sont pas de toi (photos de projets, banques d'images…) -->
+      <p class="mt-4"><strong>Crédits :</strong> [à compléter]</p>
+      <p class="mt-4">
+        Polices : Anton, Space Mono et Inter, sous licence SIL Open Font License, hébergées sur ce serveur.
+      </p>
+    </section>
+
+    <section>
+      <h2 class="label-mono font-mono text-2xl text-rouge-clair">04. Traitement des données (RGPD)</h2>
+      <p class="mt-4">
+        Dans le cadre de l'utilisation du terminal de contact, des données à caractère personnel sont
+        collectées (nom, email, message).
+      </p>
+      <ul class="mt-4 space-y-3">
+        <li><strong>Finalité :</strong> ces données sont strictement utilisées pour répondre aux demandes de contact professionnelles ou de stage.</li>
+        <li><strong>Stockage et durée de conservation :</strong> les données sont conservées le temps nécessaire au traitement de la demande, et pour une durée maximale d'un an. Elles ne sont en aucun cas cédées, revendues ou utilisées à des fins commerciales.</li>
+        <li><strong>Droits de l'utilisateur :</strong> conformément au Règlement général sur la protection des données (RGPD), vous disposez d'un droit d'accès, de rectification, de portabilité et d'effacement de vos données.</li>
+        <li><strong>Exercice de ces droits :</strong> écrivez à <a href="mailto:yanis.forster@gmail.com" class="underline">yanis.forster@gmail.com</a>.</li>
+        <li><strong>Cookies :</strong> ce site ne dépose aucun cookie et n'utilise aucun outil de mesure d'audience.</li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

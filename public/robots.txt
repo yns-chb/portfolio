@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.yanischouhib.fr/sitemap-index.xml
