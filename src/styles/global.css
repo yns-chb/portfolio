@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
-/* Polices auto-hébergées (pas d'appel à Google Fonts → pas de transfert d'IP, RGPD) */
+
 @import "@fontsource/anton/400.css";
 @import "@fontsource/space-mono/400.css";
 @import "@fontsource/space-mono/700.css";
 @import "@fontsource-variable/inter";
 
-/* Tokens repris du guide de style Figma */
+
 @media (prefers-reduced-motion: no-preference) {
   @view-transition {
     navigation: auto;
@@ -25,7 +25,6 @@
 @theme {
   --color-creme: #efeedd;
   --color-rouge: #b70101;
-  /* Rouge éclairci pour le texte sur fond noir : #b70101 sur noir ≈ 3:1, trop faible (WCAG AA = 4.5:1) */
   --color-rouge-clair: #ff5c5c;
   --color-noir: #000000;
 
@@ -33,28 +32,26 @@
   --font-mono: "Space Mono", ui-monospace, monospace;
   --font-sans: "Inter Variable", system-ui, sans-serif;
 
-  /* Échelle typographique reprise des styles de texte Figma (maquette en 1440px).
-     La taille suit la largeur de l'écran (vw) : identique à la maquette à 1440px,
-     proportionnellement plus petite en dessous, bloquée par un minimum sur mobile. */
+
   --text-accueil: clamp(4.5rem, 11.11vw, 10rem);
-  /* YANIS FORSTER — 160px */
+  
   --text-titre: clamp(3.5rem, 8.89vw, 8rem);
-  /* H1 — 128px */
+  
   --text-titre-2: clamp(2.5rem, 4.44vw, 4rem);
-  /* H2 — 64px */
+
   --text-bouton: clamp(1.5rem, 2.22vw, 2rem);
-  /* bouton envoyer — 32px */
+  
   --text-label: clamp(1rem, 1.39vw, 1.25rem);
-  /* libellés "> …" — 20px */
+  
   --text-meta: clamp(0.9375rem, 1.25vw, 1.125rem);
-  /* texte mono — 18px */
+  
   --text-corps: clamp(1rem, 1.25vw, 1.125rem);
-  /* paragraphes — 18px */
+ 
   --text-corps--line-height: 1.7;
   --text-petit: clamp(0.875rem, 1.11vw, 1rem);
-  /* légendes, cartes — 16px */
+ 
 
-  /* Voyant du statut : allumé / éteint, sans transition (steps) */
+
   --animate-clignote: clignote 1.2s steps(1, end) infinite;
 
   @keyframes clignote {
@@ -75,7 +72,7 @@
     @apply font-display uppercase leading-none;
   }
 
-  /* Focus bien visible pour la navigation clavier */
+ 
   :focus-visible {
     outline: 3px solid var(--color-rouge);
     outline-offset: 3px;
@@ -97,20 +94,18 @@
 
 @layer components {
 
-  /* Libellés façon terminal : "> mon_libellé" */
+
   .label-mono {
     @apply font-mono font-bold uppercase text-rouge;
   }
 
-  /* Curseur de terminal "_" qui clignote après un libellé.
-     Le "/ ''" masque le caractère aux lecteurs d'écran (sinon : "tiret bas").
-     Avec la réduction des animations, il reste affiché sans clignoter. */
+  
   .curseur::after {
     content: "_" / "";
     animation: var(--animate-clignote);
   }
 
-  /* Tag rouge type [développement] */
+ 
   .tag {
     @apply inline-block border-2 border-noir bg-rouge px-3 py-1 font-mono font-bold uppercase text-creme;
   }

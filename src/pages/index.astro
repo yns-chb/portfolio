@@ -2,10 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Intro from '../components/Intro.astro';
 import CarteProjet from '../components/CarteProjet.astro';
-import FiltresProjets from '../components/FiltresProjets.astro';
 import { projets } from '../data/projets';
 
-// Les deux premiers projets en cartes côte à côte, le dernier en grande carte
+
 const [premier, deuxieme, ...suivants] = projets;
 
 const competences = [
@@ -21,8 +20,8 @@ const competences = [
 >
   <Intro slot="avant" />
 
-  <!-- En-tête de page : nom + formation -->
-  <section class="flex flex-col gap-6 border-b-[6px] border-noir px-4 py-12 md:flex-row md:items-end md:justify-between md:px-7 md:py-16">
+  
+  <section class="flex flex-col gap-6 border-b-[6px] border-noir px-4 pt-12 pb-3 md:flex-row md:items-end md:justify-between md:px-7 md:pt-16 md:pb-4">
     <h1 class="text-accueil">Yanis<br />Forster</h1>
     <p class="font-mono md:pb-4 md:text-right">
       <span class="block text-label font-bold text-rouge uppercase">BUT MMI</span>
@@ -30,13 +29,13 @@ const competences = [
     </p>
   </section>
 
-  <!-- Projets à la une -->
+ 
   <section class="px-4 pt-6 pb-20 md:px-7" aria-labelledby="titre-projets">
     <h2 id="titre-projets" class="sr-only">Projets à la une</h2>
 
-    <FiltresProjets />
+   
 
-    <div data-liste-projets class="mt-14 grid gap-14 md:grid-cols-2 md:gap-x-24 md:gap-y-12">
+    <div data-liste-projets class="mt-12 grid gap-12 md:grid-cols-2 md:gap-x-12 md:gap-y-12">
       <CarteProjet projet={premier} variante="compacte" />
       <CarteProjet projet={deuxieme} variante="compacte" />
       {
@@ -53,7 +52,7 @@ const competences = [
     </p>
   </section>
 
-  <!-- Compétences -->
+ 
   <section class="px-4 pb-20 md:px-7" aria-labelledby="titre-competences">
     <h2 id="titre-competences" class="border-t-[10px] border-noir pt-4 text-titre-2 md:text-titre">
       Compétences

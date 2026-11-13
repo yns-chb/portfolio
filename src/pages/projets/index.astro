@@ -1,14 +1,28 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-// Page Projets : à construire mercredi 11 avec la content collection
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CarteProjet from '../../components/CarteProjet.astro';
+import FiltresProjets from '../../components/FiltresProjets.astro';
+import { projets } from '../../data/projets';
 ---
 
 <BaseLayout
   title="Projets"
-  description="Études de cas détaillées des projets web et créatifs de Yanis Forster."
+  description="Trois études de cas détaillées : Tacita, TiK•TaK et cineHOME, de la conception au développement."
 >
-  <section class="px-4 py-16 md:px-7">
+  <section class="px-4 pt-12 pb-20 md:px-7 md:pt-16">
     <h1 class="text-titre">Projets</h1>
-    <p class="label-mono curseur mt-6 text-label">&gt; en_construction</p>
+    <p class="label-mono curseur mt-8 text-label">&gt; {projets.length} études de cas en détail</p>
+
+    <hr class="mt-10 border-t-[3px] border-noir" />
+
+    <div class="mt-10">
+      <FiltresProjets />
+    </div>
+
+    <h2 class="label-mono mt-12 text-label font-bold">&gt; études_de_cas ({projets.length})</h2>
+
+    <div data-liste-projets class="mt-12 grid gap-12 md:grid-cols-2 md:gap-x-12">
+      {projets.map((projet) => <CarteProjet projet={projet} variante="compacte" details />)}
+    </div>
   </section>
 </BaseLayout>

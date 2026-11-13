@@ -1,8 +1,9 @@
 ---
-// Carte d'un projet, en trois mises en page :
-// - "compacte" : accueil, deux cartes côte à côte
-// - "large"    : accueil, image à gauche et texte à droite
-// - "grille"   : page Projets, trois colonnes avec la stack et le lien
+// Carte d'un projet, en deux mises en page :
+// - "compacte" : deux cartes côte à côte, tag posé sur la bordure
+// - "large"    : image à gauche, texte à droite
+// Avec details (page Projets), la carte affiche aussi la stack et le lien
+// « voir l'étude de cas ».
 //
 // Survol : la carte se décale et une ombre rouge pleine apparaît derrière,
 // comme la boîte de l'intro. Même effet au clavier (focus-within).
@@ -15,12 +16,11 @@ import type { Projet } from '../data/projets';
 
 interface Props {
   projet: Projet;
-  variante?: 'compacte' | 'large' | 'grille';
-  titreNiveau?: 'h2' | 'h3';
+  variante?: 'compacte' | 'large';
+  details?: boolean;
 }
 
-const { projet, variante = 'grille', titreNiveau = 'h3' } = Astro.props;
-const Titre = titreNiveau;
+const { projet, variante = 'compacte', details = false } = Astro.props;
 const lien = `/projets/${projet.slug}/`;
 const nomTransition = `projet-${projet.slug}`;
 const libelleCategorie = `[${projet.categorie.replace(' ', '_')}]`;
@@ -29,17 +29,15 @@ const libelleCategorie = `[${projet.categorie.replace(' ', '_')}]`;
 <article
   data-categorie={projet.categorie}
   class:list={[
-    'carte-projet relative flex border-4 border-noir bg-creme md:border-[5px]',
+    'carte-projet relative flex h-full flex-col border-4 border-noir bg-creme md:border-[5px]',
     variante === 'large'
-      ? 'flex-col gap-8 p-6 md:grid md:grid-cols-[2fr_1fr] md:items-center md:gap-12 md:p-8'
-      : 'flex-col p-6',
-    variante === 'compacte' && 'pt-10',
+      ? 'gap-6 p-5 md:grid md:grid-cols-[3fr_2fr] md:items-center md:gap-10 md:p-6'
+      : 'p-5 pt-9 md:p-6 md:pt-10',
   ]}
 >
   {variante === 'compacte' && (
     <span class="tag absolute -top-4 left-5 text-petit">{libelleCategorie}</span>
   )}
-  {variante === 'grille' && <span class="tag mb-5 self-start text-petit">{libelleCategorie}</span>}
 
   <Image
     src={projet.image}
@@ -47,43 +45,30 @@ const libelleCategorie = `[${projet.categorie.replace(' ', '_')}]`;
     widths={[600, 1200]}
     sizes={variante === 'large' ? '(min-width: 768px) 60vw, 100vw' : '(min-width: 768px) 45vw, 100vw'}
     class:list={[
-      'w-full border-[3px] border-noir object-cover object-top',
-      variante === 'compacte' && 'aspect-[2.15/1]',
-      variante === 'large' && 'aspect-[1.8/1]',
-      variante === 'grille' && 'aspect-[1.8/1]',
+      'w-full border-[3px] border-noir object-cover',
+      variante === 'compacte' ? 'aspect-[2.4/1]' : 'aspect-[2/1]',
     ]}
-    style={`view-transition-name: ${nomTransition}`}
+    style={`view-transition-name: ${nomTransition}; object-position: ${variante === 'compacte' ? (projet.cadrage ?? 'top') : 'top'}`}
   />
 
   <div class="flex flex-1 flex-col">
     {variante === 'large' && <span class="tag self-start text-petit">{libelleCategorie}</span>}
 
-    <Titre
-      class:list={[
-        'font-display text-titre-2 leading-none uppercase',
-        variante === 'compacte' && 'mt-8',
-        variante === 'large' && 'mt-6',
-        variante === 'grille' && 'mt-8',
-      ]}
-    >
+    <h3 class="mt-6 font-display text-[clamp(2.25rem,3.33vw,3rem)] leading-none uppercase">
       <!-- Le lien couvre toute la carte grâce à son ::after -->
       <a href={lien} class="after:absolute after:inset-0 after:content-['']">
         {projet.titre}
       </a>
-    </Titre>
+    </h3>
 
-    <p class="label-mono mt-3 text-label">
-      {variante === 'grille' && '> '}{projet.sousTitre}
-    </p>
+    <p class="label-mono mt-2 text-label">{projet.sousTitre}</p>
 
-    <p class="mt-4 text-petit leading-relaxed">
-      {projet.description}
-    </p>
+    <p class="mt-3 text-petit leading-relaxed">{projet.description}</p>
 
-    {variante === 'grille' && (
+    {details && (
       <>
-        <p class="mt-4 font-mono text-sm">{projet.stack.join(' · ')}</p>
-        <span class="label-mono mt-auto pt-6 text-label" aria-hidden="true">
+        <p class="mt-3 font-mono text-xs">{projet.stack.join(' · ')}</p>
+        <span class="label-mono mt-auto pt-5 text-meta" aria-hidden="true">
           [voir_l'étude_de_cas] →
         </span>
       </>

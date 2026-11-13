@@ -1,14 +1,13 @@
-// Les trois études de cas, utilisées par la page d'accueil et la page Projets.
-// Les images sont dans src/assets/projets/ : Astro les optimise au build.
+
 import type { ImageMetadata } from 'astro';
-import tacita from '../assets/projets/tacita.jpg';
-import tiktak from '../assets/projets/tiktak.jpg';
-import cinehome from '../assets/projets/cinehome.jpg';
+import tacita from '../assets/projets/tacita.webp';
+import tiktak from '../assets/projets/tiktak.webp';
+import cinehome from '../assets/projets/cinehome.webp';
 
 export type Categorie = 'développement' | 'ux design';
 
 export interface Projet {
-  slug: string; // sert à l'URL (/projets/tacita/) et au nom de la transition
+  slug: string; 
   titre: string;
   sousTitre: string;
   description: string;
@@ -16,6 +15,7 @@ export interface Projet {
   stack: string[];
   image: ImageMetadata;
   alt: string;
+  cadrage?: string; 
 }
 
 export const projets: Projet[] = [
@@ -50,9 +50,10 @@ export const projets: Projet[] = [
     categorie: 'ux design',
     stack: ['figma', 'audit ux', 'prototypage'],
     image: cinehome,
+    cadrage: 'center',
     alt: "Page d'accueil de cineHOME : un film mis en avant en grand, avec les boutons Lecture et Ajouter à la cinémathèque.",
   },
 ];
 
-// Catégories réellement utilisées, dans l'ordre d'apparition (pour les filtres)
+
 export const categories = [...new Set(projets.map((p) => p.categorie))];
