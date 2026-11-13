@@ -1,0 +1,115 @@
+
+<dialog
+  id="lightbox"
+  aria-label="Image agrandie"
+  class="m-0 h-dvh max-h-none w-screen max-w-none bg-transparent p-0 backdrop:bg-noir/90"
+>
+  <div class="flex h-full flex-col">
+    <div class="flex items-center justify-between gap-6 bg-noir px-4 py-3 font-mono text-creme md:px-7">
+      <p class="min-w-0 truncate text-petit">
+        <span id="lightbox-compteur" class="text-rouge-clair"></span>
+        <span id="lightbox-legende"></span>
+      </p>
+      <div class="flex shrink-0 items-center gap-5 font-bold uppercase">
+        <button id="lightbox-prec" type="button" class="hover:text-rouge-clair" aria-label="Image précédente">[←]</button>
+        <button id="lightbox-suiv" type="button" class="hover:text-rouge-clair" aria-label="Image suivante">[→]</button>
+        <button id="lightbox-fermer" type="button" class="hover:text-rouge-clair">[fermer]</button>
+      </div>
+    </div>
+    <!-- Zone défilante : sur mobile, une image large (story mapping) se parcourt en glissant -->
+    <div id="lightbox-zone" class="flex-1 overflow-auto p-4 md:p-7">
+      <img id="lightbox-img" alt="" class="mx-auto block h-auto max-w-none lg:max-w-full" />
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+  const grande = document.getElementById('lightbox-img') as HTMLImageElement;
+  const legende = document.getElementById('lightbox-legende')!;
+  const compteur = document.getElementById('lightbox-compteur')!;
+  const zone = document.getElementById('lightbox-zone')!;
+  const prec = document.getElementById('lightbox-prec')!;
+  const suiv = document.getElementById('lightbox-suiv')!;
+
+  // Images actuellement parcourues (une seule, ou toute une galerie) et position
+  let serie: HTMLImageElement[] = [];
+  let position = 0;
+
+  // Prend la plus grande version disponible dans srcset (sinon src),
+  // pour que l'image agrandie reste nette
+  function meilleureSource(img: HTMLImageElement) {
+    const candidats = img.srcset
+      .split(',')
+      .map((c) => c.trim().split(/\s+/))
+      .filter(([url]) => url)
+      .map(([url, w]) => ({ url, largeur: parseInt(w) || 0 }));
+    if (!candidats.length) return img.currentSrc || img.src;
+    return candidats.sort((a, b) => b.largeur - a.largeur)[0].url;
+  }
+
+  function afficher(index: number) {
+    position = (index + serie.length) % serie.length; // boucle : après la dernière, on revient à la première
+    const img = serie[position];
+    // Taille réelle de la grande version, limitée à 1600 px (lisible sans être démesurée)
+    grande.style.width = '';
+    grande.onload = () => {
+      grande.style.width = `${Math.min(grande.naturalWidth, 1600)}px`;
+    };
+    grande.src = meilleureSource(img);
+    grande.alt = img.alt;
+    legende.textContent = img.alt;
+    const plusieurs = serie.length > 1;
+    compteur.textContent = plusieurs ? `${position + 1}/${serie.length} · ` : '';
+    prec.hidden = suiv.hidden = !plusieurs;
+    zone.scrollTo(0, 0);
+  }
+
+  function ouvrir(img: HTMLImageElement) {
+    const galerie = img.closest('[data-galerie]');
+    serie = galerie ? [...galerie.querySelectorAll('img')] : [img];
+    afficher(serie.indexOf(img));
+    document.documentElement.style.overflow = 'hidden';
+    dialog.showModal();
+  }
+
+  function fermer() {
+    dialog.close();
+  }
+
+  // La page redevient défilable à chaque fermeture (bouton, Échap ou clic à côté)
+  dialog.addEventListener('close', () => {
+    document.documentElement.style.overflow = '';
+  });
+  document.getElementById('lightbox-fermer')!.addEventListener('click', fermer);
+  prec.addEventListener('click', () => afficher(position - 1));
+  suiv.addEventListener('click', () => afficher(position + 1));
+  // Flèches du clavier pour parcourir une galerie
+  dialog.addEventListener('keydown', (e) => {
+    if (serie.length < 2) return;
+    if (e.key === 'ArrowLeft') afficher(position - 1);
+    if (e.key === 'ArrowRight') afficher(position + 1);
+  });
+  // Clic sur le fond (pas sur l'image) : on ferme
+  zone.addEventListener('click', (e) => {
+    if (e.target === zone) fermer();
+  });
+
+  // Chaque image de la zone est placée dans un bouton : cliquable à la souris ET au clavier
+  document.querySelectorAll<HTMLImageElement>('[data-agrandissable] img').forEach((img) => {
+    const bouton = document.createElement('button');
+    bouton.type = 'button';
+    bouton.className = 'relative block w-full cursor-zoom-in';
+    bouton.setAttribute('aria-label', `Agrandir l'image : ${img.alt || 'sans description'}`);
+    img.replaceWith(bouton);
+    bouton.append(img);
+
+    const badge = document.createElement('span');
+    badge.className = 'absolute right-2 bottom-2 bg-noir px-2 py-1 font-mono text-xs text-creme uppercase';
+    badge.textContent = '[agrandir]';
+    badge.setAttribute('aria-hidden', 'true');
+    bouton.append(badge);
+
+    bouton.addEventListener('click', () => ouvrir(img));
+  });
+</script>

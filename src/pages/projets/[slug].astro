@@ -1,0 +1,258 @@
+---
+// Page d'une étude de cas. Une seule page sert pour les trois projets :
+// Astro la génère une fois par projet au build (getStaticPaths).
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FicheInfo from '../../components/FicheInfo.astro';
+import Lightbox from '../../components/Lightbox.astro';
+import { projets } from '../../data/projets';
+import { etudes } from '../../data/etudes';
+
+export function getStaticPaths() {
+  return projets.map((projet, i) => ({
+    params: { slug: projet.slug },
+    // Projet suivant : le dernier renvoie au premier
+    props: { projet, suivant: projets[(i + 1) % projets.length] },
+  }));
+}
+
+const { projet, suivant } = Astro.props;
+const etude = etudes[projet.slug];
+const libelleCategorie = `[${projet.categorie.replace(' ', '_')}]`;
+
+// Numéro + titre de chaque section, repris dans le sommaire de la maquette
+const sections = {
+  contexte: '01',
+  role: '02',
+  processus: '03',
+  choix: '04',
+  resultat: '05',
+  bilan: '06',
+};
+
+const lienClasses = 'label-mono text-meta underline underline-offset-4 hover:text-noir';
+---
+
+<BaseLayout title={projet.titre} description={projet.description}>
+  <!-- En-tête : catégorie, titre, sous-titre et image principale -->
+  <section class="border-b-[6px] border-noir px-4 pt-12 pb-12 md:px-7 md:pt-16">
+    <span class="tag text-petit">{libelleCategorie}</span>
+    <h1 class="mt-6 text-titre">{projet.titre}</h1>
+    <p class="label-mono curseur mt-6 text-label">&gt; {projet.sousTitre}</p>
+
+    <!-- Même view-transition-name que l'image de la carte : elle « grandit » jusqu'ici -->
+    <Image
+      src={projet.image}
+      alt={projet.alt}
+      widths={[800, 1400]}
+      sizes="(min-width: 768px) 95vw, 100vw"
+      loading="eager"
+      class="mt-10 w-full border-4 border-noir"
+      style={`view-transition-name: projet-${projet.slug}`}
+    />
+  </section>
+
+  <div class="grid gap-12 px-4 py-16 md:px-7 lg:grid-cols-[284px_1fr] lg:gap-24">
+    <FicheInfo infos={etude.fiche} />
+
+    <div class="flex max-w-[980px] min-w-0 flex-col gap-24" data-agrandissable>
+      <!-- 01 · Contexte & commande -->
+      <section aria-labelledby="contexte">
+        <h2 id="contexte" class="titre-section text-titre-2">
+          <span class="numero">{sections.contexte}</span> Contexte & commande
+        </h2>
+        {etude.contexte.map((p, i) => <p class:list={['text-corps', i === 0 ? 'mt-8' : 'mt-4']}>{p}</p>)}
+        <dl class="mt-6 flex flex-col gap-3 text-corps">
+          {
+            etude.commande.map(({ label, texte }) => (
+              <div>
+                <dt class="inline font-semibold">{label} :</dt>{" "}
+                <dd class="inline">{texte}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <!-- 02 · Mon rôle -->
+      <section aria-labelledby="role">
+        <h2 id="role" class="titre-section text-titre-2">
+          <span class="numero">{sections.role}</span> Mon rôle
+        </h2>
+        <div class:list={['mt-10 grid gap-8', etude.role.colonnes.length > 1 && 'md:grid-cols-2']}>
+          {
+            etude.role.colonnes.map((colonne) => (
+              <div class="border-[3px] border-noir p-6 pt-0">
+                <span class:list={['tag -mt-4 text-petit', colonne.sombre && 'bg-noir']}>{colonne.tag}</span>
+                <ul class="mt-5 flex flex-col gap-3 font-mono text-petit">
+                  {colonne.items.map((item) => (
+                    <li class="pl-5 -indent-5">&gt; {item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
+        </div>
+        {etude.role.note && <p class="mt-6 text-corps">{etude.role.note}</p>}
+      </section>
+
+      <!-- 03 · Processus -->
+      <section aria-labelledby="processus">
+        <h2 id="processus" class="titre-section text-titre-2">
+          <span class="numero">{sections.processus}</span> Processus
+        </h2>
+        {etude.processus.map((p, i) => <p class:list={['text-corps', i === 0 ? 'mt-8' : 'mt-4']}>{p}</p>)}
+
+        <ol class="mt-10 grid gap-8 sm:grid-cols-3">
+          {
+            etude.etapes.map((etape) => (
+              <li>
+                <figure>
+                  <div data-galerie class="border-2 border-noir bg-noir/5">
+                    {etape.visuels.map((visuel, i) => (
+                      <div hidden={i > 0}>
+                        <Image
+                          src={visuel.image}
+                          alt={visuel.alt}
+                          widths={[400, 1600]}
+                          sizes="(min-width: 640px) 30vw, 100vw"
+                          class="aspect-[4/3] w-full object-cover object-top"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <figcaption class="mt-3 font-mono text-xs uppercase">
+                    {etape.legende}
+                    {etape.visuels.length > 1 && <span class="text-rouge"> · {etape.visuels.length} images</span>}
+                  </figcaption>
+                </figure>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <!-- 04 · Choix techniques (ou de conception) -->
+      <section aria-labelledby="choix">
+        <h2 id="choix" class="titre-section text-titre-2">
+          <span class="numero">{sections.choix}</span> {etude.choix.titre}
+        </h2>
+        <dl class="mt-10 border-b-2 border-noir">
+          {
+            etude.choix.items.map(({ nom, texte }) => (
+              <div class="grid gap-2 border-t-2 border-noir py-6 md:grid-cols-[200px_1fr] md:gap-8">
+                <dt class="label-mono text-meta">&gt; {nom}</dt>
+                <dd class="text-corps">{texte}</dd>
+              </div>
+            ))
+          }
+        </dl>
+
+        {
+          etude.prototype && (
+            <div class="mt-10 flex flex-col items-start gap-4 bg-noir p-8 text-creme md:flex-row md:items-center md:justify-between">
+              <p class="font-mono text-petit uppercase">
+                <span class="text-rouge-clair">&gt;</span> Prototype navigable sur Figma, à tester sur ordinateur
+              </p>
+              <a
+                href={etude.prototype.href}
+                target="_blank"
+                rel="noopener"
+                class="border-2 border-creme px-4 py-2 font-mono text-petit font-bold uppercase hover:bg-creme hover:text-noir"
+              >
+                [{etude.prototype.texte}] →<span class="sr-only"> (nouvel onglet)</span>
+              </a>
+            </div>
+          )
+        }
+      </section>
+
+      <!-- 05 · Résultat -->
+      <section aria-labelledby="resultat">
+        <h2 id="resultat" class="titre-section text-titre-2">
+          <span class="numero">{sections.resultat}</span> Résultat
+        </h2>
+
+        <div class:list={['mt-10 grid items-end gap-6', etude.resultat.mobile && 'sm:grid-cols-[3fr_1fr]']}>
+          <Image
+            src={etude.resultat.principal.image}
+            alt={etude.resultat.principal.alt}
+            widths={[800, 1600]}
+            sizes="(min-width: 1024px) 60vw, 100vw"
+            class="w-full border-2 border-noir"
+          />
+          {
+            etude.resultat.mobile && (
+              <Image
+                src={etude.resultat.mobile.image}
+                alt={etude.resultat.mobile.alt}
+                widths={[300, 800]}
+                sizes="(min-width: 640px) 20vw, 60vw"
+                class="mx-auto w-3/5 border-2 border-noir sm:w-full"
+              />
+            )
+          }
+        </div>
+
+        <p class="mt-8 text-corps">{etude.resultat.texte}</p>
+        {
+          etude.resultat.liste && (
+            <ul class="mt-4 flex flex-col gap-2 text-corps">
+              {etude.resultat.liste.map((item) => (
+                <li class="pl-5 -indent-5">• {item}</li>
+              ))}
+            </ul>
+          )
+        }
+
+        <ul class="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+          {
+            etude.resultat.liens.map((lien) => (
+              <li>
+                <a href={lien.href} target="_blank" rel="noopener" class={lienClasses}>
+                  [{lien.texte}]<span class="sr-only"> (nouvel onglet)</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- 06 · Bilan -->
+      <section aria-labelledby="bilan">
+        <h2 id="bilan" class="titre-section text-titre-2">
+          <span class="numero">{sections.bilan}</span> Bilan
+        </h2>
+        {etude.bilan.map((p, i) => <p class:list={['text-corps', i === 0 ? 'mt-8' : 'mt-4']}>{p}</p>)}
+      </section>
+    </div>
+  </div>
+
+  <!-- Projet suivant -->
+  <a
+    href={`/projets/${suivant.slug}/`}
+    class="group flex flex-col gap-4 bg-noir px-4 py-12 text-creme md:flex-row md:items-end md:justify-between md:px-7 md:py-16"
+  >
+    <span class="font-mono text-label font-bold text-rouge-clair uppercase">&gt; projet_suivant</span>
+    <span class="font-display text-titre leading-none uppercase transition-transform group-hover:translate-x-2">
+      {suivant.titre} →
+    </span>
+  </a>
+
+  <Lightbox />
+</BaseLayout>
+
+<style>
+  /* Titre de section : petit numéro rouge en mono, puis le titre en Anton */
+  .titre-section {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .numero {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 700;
+    color: var(--color-rouge);
+  }
+</style>

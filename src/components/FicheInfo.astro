@@ -1,26 +1,35 @@
 ---
-// Panneau noir "> libellé / valeur" : page À propos et fiches projet.
-// Sur grand écran, il reste collé en haut pendant le scroll (sticky).
+
+interface Lien {
+  texte: string;
+  href: string;
+}
 interface Props {
-  infos: { label: string; valeur: string }[];
+  infos: { label: string; valeur?: string; liens?: Lien[] }[];
 }
 
 const { infos } = Astro.props;
 ---
 
-<aside
-  class="bg-noir p-7 font-mono text-petit uppercase lg:sticky lg:top-32 lg:self-start"
->
+<aside class="bg-noir p-7 font-mono text-petit uppercase lg:sticky lg:top-32 lg:self-start">
   <dl class="flex flex-col gap-7">
-    {
-      infos.map(({ label, valeur }) => (
-        <div>
-          <dt class="font-bold text-rouge-clair">&gt; {label}</dt>
-          <dd class="mt-1 font-bold whitespace-pre-line text-creme">
-            {valeur}
+    {infos.map(({ label, valeur, liens }) => (
+      <div>
+        <dt class="font-bold text-rouge-clair">&gt; {label}</dt>
+        {valeur && <dd class="mt-1 font-bold whitespace-pre-line text-creme">{valeur}</dd>}
+        {liens?.map((lien) => (
+          <dd class="mt-1">
+            <a
+              href={lien.href}
+              target="_blank"
+              rel="noopener"
+              class="font-bold text-creme underline underline-offset-4 hover:text-rouge-clair"
+            >
+              [{lien.texte}]<span class="sr-only"> (nouvel onglet)</span>
+            </a>
           </dd>
-        </div>
-      ))
-    }
+        ))}
+      </div>
+    ))}
   </dl>
 </aside>
