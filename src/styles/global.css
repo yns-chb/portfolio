@@ -7,6 +7,21 @@
 @import "@fontsource-variable/inter";
 
 /* Tokens repris du guide de style Figma */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+
+  body>header {
+    view-transition-name: entete;
+  }
+
+  ::view-transition-group(*) {
+    animation-duration: 0.45s;
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}
+
 @theme {
   --color-creme: #efeedd;
   --color-rouge: #b70101;

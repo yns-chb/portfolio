@@ -1,7 +1,18 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Intro from "../components/Intro.astro";
-// Page d'accueil : à construire mardi 10 (hero, projets à la une, compétences)
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Intro from '../components/Intro.astro';
+import CarteProjet from '../components/CarteProjet.astro';
+import FiltresProjets from '../components/FiltresProjets.astro';
+import { projets } from '../data/projets';
+
+// Les deux premiers projets en cartes côte à côte, le dernier en grande carte
+const [premier, deuxieme, ...suivants] = projets;
+
+const competences = [
+  { titre: 'développement', outils: ['astro', 'javascript', 'html / css', 'wordpress'] },
+  { titre: 'data', outils: ['sqlite', 'pocketbase', 'modélisation mcd/mld'] },
+  { titre: 'création', outils: ['figma', 'affinity', 'davinci resolve'] },
+];
 ---
 
 <BaseLayout
@@ -10,10 +21,57 @@ import Intro from "../components/Intro.astro";
 >
   <Intro slot="avant" />
 
-  <section class="border-b-[3px] border-noir px-4 py-16 md:px-7">
+  <!-- En-tête de page : nom + formation -->
+  <section class="flex flex-col gap-6 border-b-[6px] border-noir px-4 py-12 md:flex-row md:items-end md:justify-between md:px-7 md:py-16">
     <h1 class="text-accueil">Yanis<br />Forster</h1>
-    <p class="label-mono curseur mt-6 text-label">
-      &gt; BUT MMI — développement web
+    <p class="font-mono md:pb-4 md:text-right">
+      <span class="block text-label font-bold text-rouge uppercase">BUT MMI</span>
+      <span class="curseur block text-meta">développement web</span>
     </p>
+  </section>
+
+  <!-- Projets à la une -->
+  <section class="px-4 pt-6 pb-20 md:px-7" aria-labelledby="titre-projets">
+    <h2 id="titre-projets" class="sr-only">Projets à la une</h2>
+
+    <FiltresProjets />
+
+    <div data-liste-projets class="mt-14 grid gap-14 md:grid-cols-2 md:gap-x-24 md:gap-y-12">
+      <CarteProjet projet={premier} variante="compacte" />
+      <CarteProjet projet={deuxieme} variante="compacte" />
+      {
+        suivants.map((projet) => (
+          <div data-item-projet class="md:col-span-2">
+            <CarteProjet projet={projet} variante="large" />
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mt-12">
+      <a href="/projets/" class="label-mono text-label hover:underline">[tous_les_projets] →</a>
+    </p>
+  </section>
+
+  <!-- Compétences -->
+  <section class="px-4 pb-20 md:px-7" aria-labelledby="titre-competences">
+    <h2 id="titre-competences" class="border-t-[10px] border-noir pt-4 text-titre-2 md:text-titre">
+      Compétences
+    </h2>
+
+    <div class="mt-6 grid gap-10 bg-noir px-6 py-10 text-creme md:grid-cols-3 md:px-16 md:py-14">
+      {
+        competences.map((bloc) => (
+          <div>
+            <h3 class="font-mono text-label font-bold text-rouge-clair uppercase">&gt; {bloc.titre}</h3>
+            <ul class="mt-5 flex flex-wrap gap-3">
+              {bloc.outils.map((outil) => (
+                <li class="border-2 border-creme px-2 py-1 font-mono text-petit font-bold uppercase">{outil}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
   </section>
 </BaseLayout>

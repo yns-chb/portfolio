@@ -1,0 +1,48 @@
+---
+
+import { categories } from '../data/projets';
+
+const filtres = [
+  { valeur: 'tous', libelle: '[tous_les_projets]' },
+  ...categories.map((c) => ({ valeur: c, libelle: `[${c.replace(' ', '_')}]` })),
+];
+---
+
+<div class="flex flex-wrap gap-4 md:gap-8" role="group" aria-label="Filtrer les projets">
+  {
+    filtres.map((f, i) => (
+      <button
+        type="button"
+        data-filtre={f.valeur}
+        aria-pressed={i === 0 ? 'true' : 'false'}
+        class="border-2 border-noir px-2 py-2 font-mono text-petit font-bold uppercase transition-colors hover:bg-noir hover:text-creme aria-pressed:bg-noir aria-pressed:text-creme"
+      >
+        {f.libelle}
+      </button>
+    ))
+  }
+</div>
+
+<p class="sr-only" aria-live="polite" data-filtre-annonce></p>
+
+<script>
+  const boutons = document.querySelectorAll<HTMLButtonElement>('[data-filtre]');
+  const annonce = document.querySelector('[data-filtre-annonce]');
+
+  boutons.forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      const filtre = bouton.dataset.filtre;
+      boutons.forEach((b) => b.setAttribute('aria-pressed', String(b === bouton)));
+
+      let visibles = 0;
+      document.querySelectorAll<HTMLElement>('[data-liste-projets] [data-categorie]').forEach((carte) => {
+        const afficher = filtre === 'tous' || carte.dataset.categorie === filtre;
+        // On masque l'élément de la grille (la carte ou son conteneur)
+        (carte.closest('[data-item-projet]') ?? carte).hidden = !afficher;
+        if (afficher) visibles++;
+      });
+
+      if (annonce) annonce.textContent = `${visibles} projet${visibles > 1 ? 's' : ''} affiché${visibles > 1 ? 's' : ''}`;
+    });
+  });
+</script>

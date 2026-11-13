@@ -1,0 +1,116 @@
+---
+// Carte d'un projet, en trois mises en page :
+// - "compacte" : accueil, deux cartes côte à côte
+// - "large"    : accueil, image à gauche et texte à droite
+// - "grille"   : page Projets, trois colonnes avec la stack et le lien
+//
+// Survol : la carte se décale et une ombre rouge pleine apparaît derrière,
+// comme la boîte de l'intro. Même effet au clavier (focus-within).
+//
+// Transition : l'image porte un view-transition-name unique par projet.
+// Si la page du projet donne le même nom à son image principale,
+// le navigateur fait grandir l'image de la carte jusqu'à sa place.
+import { Image } from 'astro:assets';
+import type { Projet } from '../data/projets';
+
+interface Props {
+  projet: Projet;
+  variante?: 'compacte' | 'large' | 'grille';
+  titreNiveau?: 'h2' | 'h3';
+}
+
+const { projet, variante = 'grille', titreNiveau = 'h3' } = Astro.props;
+const Titre = titreNiveau;
+const lien = `/projets/${projet.slug}/`;
+const nomTransition = `projet-${projet.slug}`;
+const libelleCategorie = `[${projet.categorie.replace(' ', '_')}]`;
+---
+
+<article
+  data-categorie={projet.categorie}
+  class:list={[
+    'carte-projet relative flex border-4 border-noir bg-creme md:border-[5px]',
+    variante === 'large'
+      ? 'flex-col gap-8 p-6 md:grid md:grid-cols-[2fr_1fr] md:items-center md:gap-12 md:p-8'
+      : 'flex-col p-6',
+    variante === 'compacte' && 'pt-10',
+  ]}
+>
+  {variante === 'compacte' && (
+    <span class="tag absolute -top-4 left-5 text-petit">{libelleCategorie}</span>
+  )}
+  {variante === 'grille' && <span class="tag mb-5 self-start text-petit">{libelleCategorie}</span>}
+
+  <Image
+    src={projet.image}
+    alt={projet.alt}
+    widths={[600, 1200]}
+    sizes={variante === 'large' ? '(min-width: 768px) 60vw, 100vw' : '(min-width: 768px) 45vw, 100vw'}
+    class:list={[
+      'w-full border-[3px] border-noir object-cover object-top',
+      variante === 'compacte' && 'aspect-[2.15/1]',
+      variante === 'large' && 'aspect-[1.8/1]',
+      variante === 'grille' && 'aspect-[1.8/1]',
+    ]}
+    style={`view-transition-name: ${nomTransition}`}
+  />
+
+  <div class="flex flex-1 flex-col">
+    {variante === 'large' && <span class="tag self-start text-petit">{libelleCategorie}</span>}
+
+    <Titre
+      class:list={[
+        'font-display text-titre-2 leading-none uppercase',
+        variante === 'compacte' && 'mt-8',
+        variante === 'large' && 'mt-6',
+        variante === 'grille' && 'mt-8',
+      ]}
+    >
+      <!-- Le lien couvre toute la carte grâce à son ::after -->
+      <a href={lien} class="after:absolute after:inset-0 after:content-['']">
+        {projet.titre}
+      </a>
+    </Titre>
+
+    <p class="label-mono mt-3 text-label">
+      {variante === 'grille' && '> '}{projet.sousTitre}
+    </p>
+
+    <p class="mt-4 text-petit leading-relaxed">
+      {projet.description}
+    </p>
+
+    {variante === 'grille' && (
+      <>
+        <p class="mt-4 font-mono text-sm">{projet.stack.join(' · ')}</p>
+        <span class="label-mono mt-auto pt-6 text-label" aria-hidden="true">
+          [voir_l'étude_de_cas] →
+        </span>
+      </>
+    )}
+  </div>
+</article>
+
+<style>
+  .carte-projet {
+    transition:
+      translate 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  /* Survol à la souris, ou focus clavier sur le lien de la carte */
+  .carte-projet:hover,
+  .carte-projet:focus-within {
+    translate: -6px -6px;
+    box-shadow: 10px 10px 0 0 var(--color-rouge);
+  }
+
+  /* Le contour de focus suit toute la carte plutôt que le seul titre */
+  .carte-projet:has(a:focus-visible) {
+    outline: 3px solid var(--color-rouge);
+    outline-offset: 6px;
+  }
+  .carte-projet a:focus-visible {
+    outline: none;
+  }
+</style>
