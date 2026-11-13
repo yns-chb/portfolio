@@ -61,6 +61,15 @@ const figma = {
   cinehome: 'https://www.figma.com/design/YrBCFyoo4bh4ZoBbIe1XA0/',
 };
 
+// Prototype navigable de cineHOME (intégré dans la page)
+const prototypeCinehome = 'https://www.figma.com/proto/YrBCFyoo4bh4ZoBbIe1XA0/maquette-cine-home?node-id=0-1';
+
+const siteTacita = 'https://tacita-lsf.luna-gouraud.fr/';
+// Fichier Figma complet de cineHOME, ouvert sur la page du guide de style
+const maquetteCinehome = 'https://www.figma.com/design/YrBCFyoo4bh4ZoBbIe1XA0/maquette-cine-home?node-id=1-4';
+// Dossier d'audit cineHOME : fichier rangé dans public/documents/
+const auditCinehome = '/documents/cinehome-audit-r304.pdf';
+
 export const etudes: Record<string, Etude> = {
   tacita: {
     fiche: [
@@ -68,7 +77,13 @@ export const etudes: Record<string, Etude> = {
       { label: 'type_de_mission', valeur: 'projet universitaire\n(équipe de trois)' },
       { label: 'mon_rôle', valeur: 'co-conception ui\nintégration front-end' },
       { label: 'stack_projet', valeur: 'figma · astro\ntailwind · pocketbase' },
-      { label: 'liens', liens: [{ texte: 'maquette_figma', href: figma.tacita }] },
+      {
+        label: 'liens',
+        liens: [
+          { texte: 'maquette_figma', href: figma.tacita },
+          { texte: 'site_web', href: siteTacita },
+        ],
+      },
     ],
     contexte: [
       "Tacita est une application web pensée pour mobile, qui vise à démocratiser l'apprentissage de la Langue des Signes Française (LSF). Ce projet académique du BUT MMI (IUT de Montbéliard), réalisé en équipe de trois, devait transformer un apprentissage souvent rigide en une expérience ludique, avec des mécaniques de jeu (quiz, memory, jeux d'association) et un système de progression pour garder les utilisateurs motivés.",
@@ -173,7 +188,10 @@ export const etudes: Record<string, Etude> = {
         image: tacitaProfil,
         alt: 'Écran profil de l’application sur mobile : photo, pseudo, bouton Modifier le profil et liste des paramètres.',
       },
-      liens: [{ texte: 'maquette_figma', href: figma.tacita }],
+      liens: [
+        { texte: 'maquette_figma', href: figma.tacita },
+        { texte: 'site_web', href: siteTacita },
+      ],
     },
     bilan: [
       "Tacita m'a appris à travailler sur une application complète en équipe, en m'appuyant sur une base de données conçue par d'autres. Côté front, j'ai renforcé ma logique JavaScript avec les mini-jeux : gestion d'états, chronomètres, validation des réponses.",
@@ -319,7 +337,13 @@ export const etudes: Record<string, Etude> = {
       { label: 'type_de_mission', valeur: 'ressource r304\nculture du numérique\nbinôme · sur pc' },
       { label: 'mon_rôle', valeur: 'audit et persona en binôme\nmaquette et prototype' },
       { label: 'stack_projet', valeur: 'figma · audit ux\npersona · prototypage' },
-      { label: 'liens', liens: [{ texte: 'prototype_figma', href: figma.cinehome }] },
+      {
+        label: 'liens',
+        liens: [
+          { texte: 'prototype_figma', href: prototypeCinehome },
+          { texte: 'dossier_audit (pdf)', href: auditCinehome },
+        ],
+      },
     ],
     contexte: [
       "cineHOME est un concept de plateforme de streaming pensée pour les cinéphiles. Le projet est parti d'un audit UX/UI de Netflix, Prime Video et Disney+, réalisé en binôme avec Maxence Jot dans le cadre de la ressource R304. L'objectif : imaginer une plateforme qui met en avant les versions des films (final cut, director's cut), les restaurations et la synchronisation avec Letterboxd.",
@@ -388,7 +412,7 @@ export const etudes: Record<string, Etude> = {
         { nom: 'prototype', texte: 'Prototype Figma navigable : recherche, fiche film, lecteur, profil et déconnexion.' },
       ],
     },
-    prototype: { texte: 'tester_le_prototype', href: figma.cinehome },
+    prototype: { texte: 'prototype de cineHOME', href: prototypeCinehome },
     resultat: {
       texte:
         "Rendu le 14 octobre 2026 : un dossier en deux parties (audit, puis conception) et une maquette Figma interactive sur PC, présentée à l'oral.",
@@ -396,7 +420,10 @@ export const etudes: Record<string, Etude> = {
         image: cinehomeSeries,
         alt: 'Page Séries de cineHOME, avec une série mise en avant et les boutons Lecture et Ajouter à la cinémathèque.',
       },
-      liens: [{ texte: 'prototype_figma', href: figma.cinehome }],
+      liens: [
+        { texte: 'maquette_et_guide_de_style', href: maquetteCinehome },
+        { texte: 'dossier_audit (pdf, 140 ko)', href: auditCinehome },
+      ],
     },
     bilan: [
       "L'audit mené avec Maxence a été la vraie force du projet. En analysant Netflix, Prime Video et Disney+, puis en définissant Julien, un cinéphile exigeant, on s'est donné des critères précis. Chaque choix de la maquette répond à l'une de ses frustrations : affiches d'époque, titre original, choix du montage, recherche multicritères, avis Letterboxd. Côté design, je me suis volontairement éloigné des codes de Prime Video pour aller vers une esthétique de cinémathèque, avec des fonds sombres, une typographie soignée et des badges techniques.",

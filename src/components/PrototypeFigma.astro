@@ -1,0 +1,62 @@
+---
+// Prototype Figma navigable, intégré dans la page.
+// L'iframe n'est chargée qu'au clic (« façade ») :
+// - la page reste légère (le prototype pèse plusieurs Mo) ;
+// - Figma ne dépose aucun cookie tant que le visiteur n'a pas choisi de l'ouvrir.
+// Le fichier Figma doit être partagé en « tout le monde avec le lien peut voir ».
+interface Props {
+  url: string; // lien du prototype (figma.com/proto/...)
+  titre: string;
+}
+
+const { url, titre } = Astro.props;
+
+// Lien d'intégration officiel : même chemin, sur embed.figma.com
+const embed = new URL(url.replace('www.figma.com', 'embed.figma.com'));
+embed.searchParams.set('embed-host', 'yanischouhib');
+embed.searchParams.set('scaling', 'scale-down-width');
+embed.searchParams.set('content-scaling', 'fixed');
+---
+
+<div class="prototype-figma mt-10" data-src={embed.toString()} data-titre={titre}>
+  <div class="relative aspect-[1280/832] w-full border-[3px] border-dashed border-noir bg-noir/10" data-cadre>
+    <div class="absolute inset-0 flex flex-col items-center justify-center gap-5 p-6 text-center" data-facade>
+      <p class="label-mono text-meta">[prototype_figma_intégré]</p>
+      <button
+        type="button"
+        class="border-2 border-noir bg-rouge px-4 py-2 font-mono text-petit font-bold text-creme uppercase hover:bg-noir"
+        data-charger
+      >
+        [tester_le_prototype]
+      </button>
+      <p class="max-w-md font-mono text-xs">
+        Le prototype se charge depuis Figma. Pensé pour un écran d'ordinateur : faites défiler dans le cadre pour voir toute la page.
+      </p>
+    </div>
+  </div>
+
+  <p class="mt-3 font-mono text-xs uppercase">
+    <a href={url} target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-rouge">
+      [ouvrir_dans_figma] →<span class="sr-only"> (nouvel onglet)</span>
+    </a>
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.prototype-figma').forEach((bloc) => {
+    const bouton = bloc.querySelector<HTMLButtonElement>('[data-charger]');
+    bouton?.addEventListener('click', () => {
+      const iframe = document.createElement('iframe');
+      iframe.src = bloc.dataset.src!;
+      iframe.title = bloc.dataset.titre!;
+      iframe.allowFullscreen = true;
+      iframe.className = 'absolute inset-0 h-full w-full';
+
+      const cadre = bloc.querySelector<HTMLElement>('[data-cadre]')!;
+      cadre.classList.remove('border-dashed');
+      bloc.querySelector('[data-facade]')?.remove();
+      cadre.append(iframe);
+      iframe.focus(); // le clavier passe directement dans le prototype
+    });
+  });
+</script>

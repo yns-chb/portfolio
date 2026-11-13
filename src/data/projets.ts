@@ -1,4 +1,5 @@
-
+// Les trois études de cas, utilisées par la page d'accueil et la page Projets.
+// Les images sont dans src/assets/projets/ : Astro les optimise au build.
 import type { ImageMetadata } from 'astro';
 import tacita from '../assets/projets/tacita.webp';
 import tiktak from '../assets/projets/tiktak.webp';
@@ -7,7 +8,7 @@ import cinehome from '../assets/projets/cinehome.webp';
 export type Categorie = 'développement' | 'ux design';
 
 export interface Projet {
-  slug: string; 
+  slug: string; // sert à l'URL (/projets/tacita/) et au nom de la transition
   titre: string;
   sousTitre: string;
   description: string;
@@ -15,7 +16,8 @@ export interface Projet {
   stack: string[];
   image: ImageMetadata;
   alt: string;
-  cadrage?: string; 
+  apercu: string; // adresse affichée dans la barre de la fenêtre, sur la page du projet
+  cadrage?: string; // partie de l'image gardée quand elle est recadrée (object-position)
 }
 
 export const projets: Projet[] = [
@@ -28,6 +30,7 @@ export const projets: Projet[] = [
     categorie: 'développement',
     stack: ['figma', 'astro', 'tailwind', 'pocketbase'],
     image: tacita,
+    apercu: 'tacita-lsf.luna-gouraud.fr',
     alt: "Page d'accueil du site de Tacita : deux personnes qui échangent en langue des signes, avec le slogan « Ne reste plus dans le silence ».",
   },
   {
@@ -39,6 +42,7 @@ export const projets: Projet[] = [
     categorie: 'développement',
     stack: ['figma', 'astro', 'sqlite', 'openrouter', 'vps'],
     image: tiktak,
+    apercu: 'tiktak.yanischouhib.fr',
     alt: "Page d'accueil de TiK•TaK : le titre « Votre montre, à votre image. » à côté de deux montres personnalisées.",
   },
   {
@@ -50,10 +54,11 @@ export const projets: Projet[] = [
     categorie: 'ux design',
     stack: ['figma', 'audit ux', 'prototypage'],
     image: cinehome,
+    apercu: 'prototype figma · cinehome',
     cadrage: 'center',
     alt: "Page d'accueil de cineHOME : un film mis en avant en grand, avec les boutons Lecture et Ajouter à la cinémathèque.",
   },
 ];
 
-
+// Catégories réellement utilisées, dans l'ordre d'apparition (pour les filtres)
 export const categories = [...new Set(projets.map((p) => p.categorie))];

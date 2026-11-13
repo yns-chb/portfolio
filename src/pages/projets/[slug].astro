@@ -5,6 +5,7 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import FicheInfo from '../../components/FicheInfo.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import PrototypeFigma from '../../components/PrototypeFigma.astro';
 import { projets } from '../../data/projets';
 import { etudes } from '../../data/etudes';
 
@@ -34,22 +35,30 @@ const lienClasses = 'label-mono text-meta underline underline-offset-4 hover:tex
 ---
 
 <BaseLayout title={projet.titre} description={projet.description}>
-  <!-- En-tête : catégorie, titre, sous-titre et image principale -->
-  <section class="border-b-[6px] border-noir px-4 pt-12 pb-12 md:px-7 md:pt-16">
-    <span class="tag text-petit">{libelleCategorie}</span>
-    <h1 class="mt-6 text-titre">{projet.titre}</h1>
-    <p class="label-mono curseur mt-6 text-label">&gt; {projet.sousTitre}</p>
+  <!-- En-tête : texte à gauche, image du projet à droite -->
+  <section
+    class="grid items-center gap-10 border-b-[6px] border-noir px-4 py-12 md:px-7 md:py-16 lg:grid-cols-[2fr_3fr] lg:gap-14"
+  >
+    <div>
+      <span class="tag text-petit">{libelleCategorie}</span>
+      <h1 class="mt-6 text-[clamp(3.5rem,6.5vw,7rem)] leading-[0.95]">{projet.titre}</h1>
+      <p class="label-mono curseur mt-6 text-label">&gt; {projet.sousTitre}</p>
+      <p class="mt-6 max-w-xl text-corps">{projet.description}</p>
+      <p class="mt-6 font-mono text-petit uppercase">{projet.stack.join(' · ')}</p>
+    </div>
 
-    <!-- Même view-transition-name que l'image de la carte : elle « grandit » jusqu'ici -->
-    <Image
-      src={projet.image}
-      alt={projet.alt}
-      widths={[800, 1400]}
-      sizes="(min-width: 768px) 95vw, 100vw"
-      loading="eager"
-      class="mt-10 w-full border-4 border-noir"
-      style={`view-transition-name: projet-${projet.slug}`}
-    />
+    <figure class="border-4 border-noir">
+      <!-- Même view-transition-name que l'image de la carte : elle « grandit » jusqu'ici -->
+      <Image
+        src={projet.image}
+        alt={projet.alt}
+        widths={[700, 1100, projet.image.width]}
+        sizes="(min-width: 1024px) 58vw, 100vw"
+        loading="eager"
+        class="block w-full"
+        style={`view-transition-name: projet-${projet.slug}`}
+      />
+    </figure>
   </section>
 
   <div class="grid gap-12 px-4 py-16 md:px-7 lg:grid-cols-[284px_1fr] lg:gap-24">
@@ -148,23 +157,7 @@ const lienClasses = 'label-mono text-meta underline underline-offset-4 hover:tex
           }
         </dl>
 
-        {
-          etude.prototype && (
-            <div class="mt-10 flex flex-col items-start gap-4 bg-noir p-8 text-creme md:flex-row md:items-center md:justify-between">
-              <p class="font-mono text-petit uppercase">
-                <span class="text-rouge-clair">&gt;</span> Prototype navigable sur Figma, à tester sur ordinateur
-              </p>
-              <a
-                href={etude.prototype.href}
-                target="_blank"
-                rel="noopener"
-                class="border-2 border-creme px-4 py-2 font-mono text-petit font-bold uppercase hover:bg-creme hover:text-noir"
-              >
-                [{etude.prototype.texte}] →<span class="sr-only"> (nouvel onglet)</span>
-              </a>
-            </div>
-          )
-        }
+        {etude.prototype && <PrototypeFigma url={etude.prototype.href} titre={etude.prototype.texte} />}
       </section>
 
       <!-- 05 · Résultat -->
@@ -231,7 +224,7 @@ const lienClasses = 'label-mono text-meta underline underline-offset-4 hover:tex
   <!-- Projet suivant -->
   <a
     href={`/projets/${suivant.slug}/`}
-    class="group flex flex-col gap-4 bg-noir px-4 py-12 text-creme md:flex-row md:items-end md:justify-between md:px-7 md:py-16"
+    class="group mb-4 flex flex-col gap-4 bg-noir px-4 py-12 text-creme md:flex-row md:items-end md:justify-between md:px-7 md:py-16"
   >
     <span class="font-mono text-label font-bold text-rouge-clair uppercase">&gt; projet_suivant</span>
     <span class="font-display text-titre leading-none uppercase transition-transform group-hover:translate-x-2">
