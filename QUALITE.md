@@ -59,7 +59,7 @@ Le site est statique : Astro génère du HTML à l'avance, donc le serveur ne ca
 **Vérifications**
 - [ ] Score SEO Lighthouse : 100
 - [ ] Toutes les pages sont dans le sitemap : https://dnsrobot.net/fr/sitemap-checker?url=https%3A%2F%2Fyanischouhib.fr%2F
-- [ ] Site déclaré dans Google Search Console : ___
+
 
 ## 4. Conformité juridique : ce que je dois à mes visiteurs et aux auteurs
 
@@ -72,13 +72,9 @@ Le site est statique : Astro génère du HTML à l'avance, donc le serveur ne ca
 
 **Aux auteurs des contenus**
 - Polices : Anton, Space Mono et Inter sont sous licence libre (SIL Open Font License), qui autorise leur intégration.
-- Projets de groupe : Tacita (trois personnes) et l'audit cineHOME (avec Maxence Jot) sont présentés comme des travaux d'équipe, avec le rôle de chacun. Le dossier d'audit est signé par nous deux et je l'ai publié avec l'accord de Maxence.
-- Images des projets : les affiches et images de films visibles dans la maquette cineHOME appartiennent à leurs ayants droit. Elles sont utilisées dans un cadre pédagogique, sans usage commercial, et les mentions légales le précisent.
-- Photos de Tacita : ___ (préciser la source, par exemple une banque d'images libres comme Pexels, et sa licence)
+- Projets de groupe : Tacita (trois personnes) et l'audit cineHOME (avec Maxence Jot) sont présentés comme des travaux d'équipe, avec le rôle de chacun. Le dossier d'audit est signé par nous deux.
 - Code : repos publics sans secrets ni données personnelles. Celui de TiK•TaK est une copie nettoyée.
 
 **À faire**
-- [ ] Nom complet dans les mentions légales
-- [ ] Crédits des images complétés
-- [ ] Accord de Maxence pour le dossier d'audit
-- [ ] Mot de passe du back-office de Tacita changé avant de publier le lien du repo
+- [ OUI ] Nom complet dans les mentions légales
+
