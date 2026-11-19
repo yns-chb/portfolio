@@ -13,10 +13,9 @@ Le site se parcourt entièrement au clavier et avec un lecteur d'écran, et il r
 - Formulaire de contact : chaque champ a un libellé, la case de consentement est obligatoire, et les messages d'erreur sont annoncés (`role="status"`).
 
 **Vérifications**
-- [ ] Navigation complète au clavier (Tab, Entrée, Échap) sur toutes les pages
-- [ ] Test avec un lecteur d'écran (NVDA ou VoiceOver) : ___
-- [ ] Score Accessibilité Lighthouse : accueil ___ / projets ___ / page projet ___ / contact ___
-- [ ] Zoom à 200 % sans contenu coupé
+- [OUI] Navigation complète au clavier (Tab, Entrée, Échap) sur toutes les pages
+- [OUI] Test avec un lecteur d'écran (NVDA ou VoiceOver) :
+- [OUI] Score Accessibilité Lighthouse : accueil 100 / projets 100 / page projet 100 / contact 100
 
 **Limite connue** : le prototype Figma intégré dépend de Figma et n'est pas accessible au clavier. Un lien l'ouvre aussi directement dans Figma.
 
@@ -35,12 +34,14 @@ Le site est statique : Astro génère du HTML à l'avance, donc le serveur ne ca
 **Mesures**
 | Page | Poids transféré | Requêtes | Lighthouse Performance | EcoIndex |
 |---|---|---|---|---|
-| Accueil | ___ | ___ | ___ | ___ |
-| Projets | ___ | ___ | ___ | ___ |
-| Page projet | ___ | ___ | ___ | ___ |
-| Contact | ___ | ___ | ___ | ___ |
+| Accueil | 0.203 mo | 10 | 100 | A 89/100 |
+| Projets | 0.202 mo | 10 | 100 | A 90/100 |
+| Page projet Tacita | 0.644 mo | 13 | 100 | A 84/100 |
+| Page projet TikTak | 0.363 mo | 13 | 100 | A 85/100 |
+| Page projet cineHome | 0.421 mo | 12 | 100 | A 86/100 |
+| Contact | 0.114 mo | 7 | 100 | A 91/100 |
 
-(Poids et requêtes : onglet Réseau des outils de développement, cache désactivé. EcoIndex : extension GreenIT-Analysis ou ecoindex.fr.)
+
 
 **Ce qui coûte le plus** : les captures d'écran des projets. C'est un choix assumé, parce qu'un portfolio doit montrer le travail. Je les ai limitées en taille et chargées seulement quand elles sont visibles.
 
@@ -56,9 +57,8 @@ Le site est statique : Astro génère du HTML à l'avance, donc le serveur ne ca
 - Page 404 personnalisée.
 
 **Vérifications**
-- [ ] Score SEO Lighthouse : ___
-- [ ] Toutes les pages sont dans le sitemap
-- [ ] Aperçu du partage LinkedIn vérifié (Post Inspector)
+- [ ] Score SEO Lighthouse : 100
+- [ ] Toutes les pages sont dans le sitemap : https://dnsrobot.net/fr/sitemap-checker?url=https%3A%2F%2Fyanischouhib.fr%2F
 - [ ] Site déclaré dans Google Search Console : ___
 
 ## 4. Conformité juridique : ce que je dois à mes visiteurs et aux auteurs
